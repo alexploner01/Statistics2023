@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Draw a circle</title>
+</head>
+<body onload="draw();">
+
+</body>
+</html>
+
+
+<script>
+  function draw() {
+    var canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+    // var canvas = document.getElementById('circle');
+    if (canvas.getContext) {
+      canvas.width = 400
+      canvas.height = 400
+      var ctx = canvas.getContext('2d');
+      var x = canvas.width / 2;
+      var y = canvas.height / 2;
+      const circle = () => {
+
+        const r = 45;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+        ctx.lineWidth = 3;
+        ctx.fillStyle = "green";  // color inside the circle
+        ctx.strokeStyle = '#FF0000';  // color of outline
+        ctx.fill(); // fill inside the circle
+        ctx.stroke() // outline
+      }
+
+      const dot = () => {
+        var ctx = canvas.getContext("2d");
+
+        var radius = 5; // Radius of the dot
+
+        ctx.fillStyle = "red";
+
+        ctx.beginPath();
+        ctx.arc(x + 80, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      const line = () => {
+        const x1 = 50;
+        const y1 = 50;
+        const x2 = 350;
+        const y2 = 350;
+
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+
+        ctx.stroke();
+      }
+
+      const rectangle = () => {
+        const x = 50;
+        const y = 300;
+        const width = 200;
+        const height = 100;
+
+        ctx.fillStyle = "yellow";
+
+        ctx.fillRect(x, y, width, height);
+      }
+
+      circle()
+      dot()
+      line()
+      rectangle()
+
+
+    }
+  }
+</script>
