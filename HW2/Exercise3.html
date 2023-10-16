@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Homework 2 Exercise 3</title>
+
+</head>
+<body onload="start();">
+</body>
+</html>
+
+
+<script>
+  function start() {
+    function generate_random_variates(n) {
+      let random_variates = []
+      for (let i = 0; i < n; i++) {
+        random_variates.push(Math.random());
+      }
+      return random_variates
+    }
+
+    let random_variates = generate_random_variates(1000)
+    console.log(random_variates)
+    const k = 20
+    let intervals_frequency = Array(k).fill(0);
+    for (let i in random_variates) {
+        let j = Math.floor(random_variates[i]*k);
+        intervals_frequency[j]++;
+    }
+
+    for (let i = 0; i < k; i++) {
+      let lowerBound = i/k;
+      let upperBound = (i+1)/k;
+      console.log(`[${lowerBound.toFixed(1)}, ${upperBound.toFixed(1)}): ${intervals_frequency[i]}`);
+    }
+  }
+</script>

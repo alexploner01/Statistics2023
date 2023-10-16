@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Column Reader</title>
+</head>
+<body>
+<input type="file" id="csvFileInput" accept=".tsv" />
+<div id="output"></div>
+
+<script>
+  document.getElementById('csvFileInput').addEventListener('change', function (event) {
+
+    function frequency_absolute(data) {
+      let frequency = {};
+      for (const i of data) {
+        frequency[i] = i in frequency ? frequency[i] + 1 : 1;
+      }
+      return frequency;
+    }
+
+    function frequency_relative(data) {
+      let absolute_frequency = frequency_absolute(data);
+      let frequency = {};
+      for (let i in absolute_frequency) {
+        frequency[i] = absolute_frequency[i] / data.length;
+      }
+      return frequency;
+    }
+
+    function frequency_percentage(data) {
+      let absolute_frequency = frequency_absolute(data);
+      let frequency = {};
+      for (let i in absolute_frequency) {
+        frequency[i] = absolute_frequency[i] / data.length * 100;
+      }
+      return frequency;
+    }
+
+    function frequency_joint(data1, data2) {
+      let frequency =  {};
+      for (const x of data1) {
+        for (const y of data2) {
+          const label = "x: " + x + ", y: " + y;
+          frequency[label] = label in frequency ? frequency[label] + 1 : 1;
+        }
+      }
+      return frequency;
+    }
+
+
+
+    let data1 = []
+    let data2 = []
+
+
+    function get_column_from_file(column_name) {
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const csvData = e.target.result;
+          let targetColumnIndex; // Change this to the index of the desired column
+
+          const rows = csvData.split('\n');
+          const results = [];
+
+          let isFirst = true;
+          rows.forEach(function (row) {
+            const columns = row.split('\t');
+            if (isFirst) {
+              targetColumnIndex = columns.indexOf(column_name);
+              isFirst = false;
+            } else {
+              if (columns.length > targetColumnIndex) {
+                results.push(columns[targetColumnIndex]);
+              }
+            }
+          });
+          if (data1.length === 0) {
+            data1 = [...results]
+          } else if (data2.length === 0) {
+            data2 = [...results]
+            setTimeout(() => {
+              console.log("------- joint distribution Hard Worker (0-5) Dream Works")
+              console.log(frequency_joint(data1, data2))
+            }, 1000)
+          }
+          console.log("---------- " + column_name + " ----------")
+          console.log(frequency_absolute(results))
+          console.log(frequency_relative(results))
+          console.log(frequency_percentage(results))
+        };
+        reader.readAsText(file);
+      }
+    }
+
+    get_column_from_file("Hard Worker (0-5)")
+    get_column_from_file("Dream Works")
+    get_column_from_file("Age")
+  });
+
+
+</script>
+</body>
+</html>
